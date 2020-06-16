@@ -68,16 +68,17 @@ module BlockCypher
       api_http_post('/txs/push', json_payload: payload)
     end
 
-    def send_money(from_address, to_address, satoshi_amount, private_key)
+    def send_money(from_address, to_address, satoshi_amount, private_key, fees)
       to_address = [to_address] unless to_address.is_a? Array
 
-      tx_new = transaction_new([from_address], to_address, satoshi_amount)
+      tx_new = transaction_new([from_address], to_address, satoshi_amount, fees)
 
       transaction_sign_and_send(tx_new, private_key)
     end
 
-    def transaction_new(input_addreses, output_addresses, satoshi_amount)
+    def transaction_new(input_addreses, output_addresses, satoshi_amount, fees)
       payload = {
+        'fees' => fees,
         'inputs' => [
           {
             addresses: input_addreses
