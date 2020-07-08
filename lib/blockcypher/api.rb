@@ -94,6 +94,24 @@ module BlockCypher
       api_http_post('/txs/new', json_payload: payload)
     end
 
+    def transaction_new_for_ethereum(input_addreses, output_addresses, satoshi_amount, gas_price)
+      payload = {
+          'gas_price' => gas_price,
+          'inputs' => [
+              {
+                  addresses: input_addreses
+              }
+          ],
+          'outputs' => [
+              {
+                  addresses: output_addresses,
+                  value: satoshi_amount
+              }
+          ]
+      }
+      api_http_post('/txs/new', json_payload: payload)
+    end
+
     def transaction_sign_and_send(new_tx, private_key)
       pubkey = pubkey_from_priv(private_key)
       # Make array of pubkeys matching length of 'tosign'
